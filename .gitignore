@@ -1,0 +1,7 @@
+/ansible.cfg
+/.env
+/.env.yaml
+/.env.yml
+/env.yaml
+/env.yml
+/inventory

@@ -1,0 +1,33 @@
+---
+- name: Create local fonts directory if it does not exist
+  become: false
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.local/share/fonts"
+    state: directory
+    mode: '0755'
+
+- name: Download DejaVuSansM Nerd Font Mono
+  become: false
+  ansible.builtin.get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/DejaVuSansMono.zip"
+    dest: "/home/{{ ansible_user }}/.local/share/fonts/NerdFont_DejaVuSansMono.zip"
+    mode: '0644'
+
+- name: Extract the DejaVuSansM Nerd Font Mono archive
+  become: false
+  ansible.builtin.unarchive:
+    src: "/home/{{ ansible_user }}/.local/share/fonts/NerdFont_DejaVuSansMono.zip"
+    dest: "/home/{{ ansible_user }}/.local/share/fonts/"
+    remote_src: true
+
+- name: Remove the downloaded Nerd Font zip file
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.local/share/fonts/NerdFont_DejaVuSansMono.zip"
+    state: absent
+
+- name: Refresh the font cache for the user
+  become: false
+  ansible.builtin.command:
+    cmd: fc-cache -f -v
+    chdir: "/home/{{ ansible_user }}"
+

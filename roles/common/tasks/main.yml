@@ -1,0 +1,110 @@
+---
+- name: Update apt repositories (Ubuntu/Debian-based)
+  become: true
+  apt:
+    update_cache: true
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Update dnf cache
+  ansible.builtin.dnf:
+    update_cache: true
+  when: ansible_facts['distribution'] == "Fedora"
+
+
+- name: Install common packages 
+  become: true
+  package:
+    name:
+      - git
+      - curl
+      - zsh
+      - flatpak
+      - stow
+    state: present
+
+- name: Install gcc-c++ (Fedora only)
+  become: true
+  package:
+    name: gcc-c++
+    state: present
+  when: ansible_facts['distribution'] == "Fedora"
+
+- name: Remove Fedora's default Flathub remote (if exists) (System)
+  become: true
+  community.general.flatpak_remote:
+    name: flathub
+    state: absent
+    method: system
+  ignore_errors: true  # Ignore errors if the remote isn't present
+
+- name: Remove Fedora's default Flathub remote (if exists) (user)
+  become: true
+  community.general.flatpak_remote:
+    name: flathub
+    state: absent
+    method: user
+  ignore_errors: true  # Ignore errors if the remote isn't present
+
+- name: Add Flathub remote (System)
+  become: true
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    method: system
+
+- name: Add Flathub remote (user)
+  become: false
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: Install Flatpak apps (System)
+  become: true
+  community.general.flatpak:
+    name:
+      - dev.vencord.Vesktop # Discord fork
+      - io.github.milkshiift.GoofCord # Discord fork
+      - io.github.philipk.boilr # Steam custom artwork
+      - io.github.radiolamp.mangojuice # mangohud overlay configurator
+      - md.obsidian.Obsidian # Obsidian
+      - org.fkoehler.KTailctl # KDE tailscale tray icon
+      - org.qbittorrent.qBittorrent # qbitTorrent
+      - it.mijorus.gearlever # Gear Lever
+    state: present
+    method: system
+
+
+- name: Configure Zsh as default shell
+  become: true
+  user:
+    name: "{{ ansible_user }}"
+    shell: /usr/bin/zsh
+
+- name: Set Git user name
+  become: false  # no sudo
+  ansible.builtin.git_config:
+    name: user.name
+    value: "{{ GIT_USER_NAME }}"
+    scope: global
+
+- name: Set Git user email
+  become: false  # no sudo
+  ansible.builtin.git_config:
+    name: user.email
+    value: "{{ GIT_USER_EMAIL }}"
+    scope: global
+
+
+- name: Clone dotfiles to user home
+  become: false  # no sudo
+  git:
+    repo: 'https://github.com/SuperSweatyYeti/dotfiles.git'
+    dest: "/home/{{ ansible_user }}/dotfiles" 
+    update: true
+    recursive: true
+    track_submodules: true   # Enables --remote-submodules behavior
+    force: true
+

@@ -1,0 +1,40 @@
+---
+
+- name: Check if docker group exists
+  command: getent group docker
+  changed_when: false
+  failed_when: false
+  register: group_check_docker
+
+- name: Check if dialout group exists
+  command: getent group dialout
+  changed_when: false
+  failed_when: false
+  register: group_check_dialout
+
+- name: Check if libvirt group exists
+  command: getent group libvirt
+  changed_when: false
+  failed_when: false
+  register: group_check_libvirt
+
+- name: Add ansible_user to groups
+  block:
+    - name: Add ansible_user to docker group
+      when: group_check_docker.rc == 0 
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"  # or any specific username
+        groups: docker              # group name
+        append: true                 # avoid removing the user from other groups
+    - name: Add ansible_user to docker group
+      when: group_check_dialout.rc == 0
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"  # or any specific username
+        groups: dialout              # group name
+        append: true                 # avoid removing the user from other groups
+    - name: Add ansible_user to docker group
+      when: group_check_libvirt.rc == 0
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"  # or any specific username
+        groups: libvirt              # group name
+        append: true                 # avoid removing the user from other groups

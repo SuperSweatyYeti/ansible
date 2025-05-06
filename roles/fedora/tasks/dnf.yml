@@ -1,0 +1,15 @@
+---
+
+- name: Ensure dnf.conf settings are configured correctly
+  become: true
+  lineinfile:
+    path: /etc/dnf/dnf.conf
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}={{ item.value }}'
+    create: true
+  loop:
+    - { key: "fastestmirror", value: "True" }
+    - { key: "max_parallel", value: "10" }
+    - { key: "keepcache", value: "True" }
+    - { key: "installonly_limit", value: "10" }
+

@@ -1,0 +1,32 @@
+---
+- name: Set KDE desktop customizations
+  become: false
+  block:
+    - name: Set global KDE Plasma theme to Breeze Dark
+      ini_file:
+        path: "/home/{{ ansible_user }}/.config/kdeglobals"
+        section: General
+        option: ColorScheme
+        value: BreezeDark
+        create: true
+
+    - name: Update KDE panel config to move panel to top
+      ini_file:
+        path: "/home/{{ ansible_user }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
+        section: "{{ item.section }}"
+        option: location
+        value: 0  # 0 = top, 1 = bottom, 2 = left, 3 = right
+        backup: yes
+      loop:
+        - { section: 'Containments][1' }  # You may need to adjust this number!
+
+    - name: Disable floating panel in KDE Plasma
+      ini_file:
+        path: "/home/{{ ansible_user }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
+        section: "{{ item.section }}"
+        option: floatingPanel
+        value: false
+        backup: yes
+      loop:
+        - { section: 'Containments][1' }  # Replace '1' with correct panel ID
+  when: DESKTOP_ENVIRONMENT == "KDE"

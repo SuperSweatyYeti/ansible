@@ -1,0 +1,35 @@
+---
+
+- name: Ensure AppImages directory exists
+  file:
+    path: "/home/{{ ansible_user }}/AppImages"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Check if Legcord AppImage is downloaded
+  stat:
+    path: /home/{{ ansible_user }}/AppImages/Legcord.AppImage
+  register: legcord_check
+
+- name: Download Legcord AppImage
+  block:
+    - name: Get latest Legcord release info
+      uri:
+        url: https://api.github.com/repos/Legcord/Legcord/releases/latest
+        return_content: true
+      register: legcord_release
+    - name: Set Legcord version tag
+      set_fact:
+        legcord_version: "{{ legcord_release.json.tag_name }}"
+    - name: Set Legcord AppImage download URL
+      set_fact:
+        legcord_url: "https://github.com/Legcord/Legcord/releases/download/{{ legcord_version }}/Legcord-{{ legcord_version | regex_replace('v', '') }}-linux-x86_64.AppImage"
+    - name: Download latest Legcord AppImage
+      get_url:
+        url: "{{ legcord_url }}"
+        dest: "/home/{{ ansible_user }}/AppImages/Legcord.AppImage"
+        mode: '0755'
+  when: not legcord_check.stat.exists
+    

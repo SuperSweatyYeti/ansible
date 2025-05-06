@@ -1,0 +1,431 @@
+---
+
+# - name: Configure Fedora repos
+#   become: true
+#   tasks:
+- name: Ensure RPM Fusion non-free repository is present
+  become: true
+  copy:
+    dest: /etc/yum.repos.d/rpmfusion-nonfree.repo
+    content: |
+      [rpmfusion-nonfree]
+      name=RPM Fusion for Fedora $releasever - Nonfree
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
+      enabled=1
+      enabled_metadata=1
+      metadata_expire=14d
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+
+      [rpmfusion-nonfree-debuginfo]
+      name=RPM Fusion for Fedora $releasever - Nonfree - Debug
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-debug-$releasever&arch=$basearch
+      enabled=0
+      metadata_expire=7d
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+
+      [rpmfusion-nonfree-source]
+      name=RPM Fusion for Fedora $releasever - Nonfree - Source
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-source-$releasever&arch=$basearch
+      enabled=0
+      metadata_expire=7d
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure RPM Fusion non-free NVIDIA driver repository is present
+  become: true
+  copy:
+    dest: /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
+    content: |
+      [rpmfusion-nonfree-nvidia-driver]
+      name=RPM Fusion for Fedora $releasever - Nonfree - NVIDIA Driver
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-nvidia-driver-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+      skip_if_unavailable=True
+
+      [rpmfusion-nonfree-nvidia-driver-debuginfo]
+      name=RPM Fusion for Fedora $releasever - Nonfree - NVIDIA Driver Debug
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-nvidia-driver-debug-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+      skip_if_unavailable=True
+
+      [rpmfusion-nonfree-nvidia-driver-source]
+      name=RPM Fusion for Fedora $releasever - Nonfree - NVIDIA Driver Source
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-nvidia-driver-source-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+      skip_if_unavailable=True
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure RPM Fusion non-free updates repository is present
+  become: true
+  copy:
+    dest: /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
+    content: |
+      [rpmfusion-nonfree-updates]
+      name=RPM Fusion for Fedora $releasever - Nonfree - Updates
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
+      enabled=1
+      enabled_metadata=1
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+
+      [rpmfusion-nonfree-updates-debuginfo]
+      name=RPM Fusion for Fedora $releasever - Nonfree - Updates Debug
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-debug-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+
+      [rpmfusion-nonfree-updates-source]
+      name=RPM Fusion for Fedora $releasever - Nonfree - Updates Source
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-source-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure RPM Fusion free repository is present
+  become: true
+  copy:
+    dest: /etc/yum.repos.d/rpmfusion-free.repo
+    content: |
+      [rpmfusion-free]
+      name=RPM Fusion for Fedora $releasever - Free
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
+      enabled=1
+      metadata_expire=14d
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
+
+      [rpmfusion-free-debuginfo]
+      name=RPM Fusion for Fedora $releasever - Free - Debug
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-debug-$releasever&arch=$basearch
+      enabled=0
+      metadata_expire=7d
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
+
+      [rpmfusion-free-source]
+      name=RPM Fusion for Fedora $releasever - Free - Source
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-source-$releasever&arch=$basearch
+      enabled=0
+      metadata_expire=7d
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure RPM Fusion free updates repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/rpmfusion-free-updates.repo
+    content: |
+      [rpmfusion-free-updates]
+      name=RPM Fusion for Fedora $releasever - Free - Updates
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+      enabled=1
+      enabled_metadata=1
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
+
+      [rpmfusion-free-updates-debuginfo]
+      name=RPM Fusion for Fedora $releasever - Free - Updates Debug
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-debug-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
+
+      [rpmfusion-free-updates-source]
+      name=RPM Fusion for Fedora $releasever - Free - Updates Source
+      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-source-$releasever&arch=$basearch
+      enabled=0
+      type=rpm-md
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Brave Browser repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/brave-browser.repo
+    content: |
+      [brave-browser]
+      name=Brave Browser
+      enabled=1
+      autorefresh=1
+      baseurl=https://brave-browser-rpm-release.s3.brave.com/$basearch
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Tailscale repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/tailscale.repo
+    content: |
+      [tailscale-stable]
+      name=Tailscale stable
+      baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+      enabled=1
+      type=rpm
+      repo_gpgcheck=1
+      gpgcheck=0
+      gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Microsoft repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/microsoft.repo
+    content: |
+      [packages-microsoft-com-prod]
+      name=packages-microsoft-com-prod
+      baseurl=https://packages.microsoft.com/yumrepos/microsoft-rhel9.0-prod
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Sublime Text repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/sublime-text.repo
+    content: |
+      [sublime-text]
+      name=Sublime Text - x86_64 - Stable
+      baseurl=https://download.sublimetext.com/rpm/stable/x86_64
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Docker CE repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/docker-ce.repo
+    content: |
+      [docker-ce-stable]
+      name=Docker CE Stable - $basearch
+      baseurl=https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-stable-debuginfo]
+      name=Docker CE Stable - Debuginfo $basearch
+      baseurl=https://download.docker.com/linux/fedora/$releasever/debug-$basearch/stable
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-stable-source]
+      name=Docker CE Stable - Sources
+      baseurl=https://download.docker.com/linux/fedora/$releasever/source/stable
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-test]
+      name=Docker CE Test - $basearch
+      baseurl=https://download.docker.com/linux/fedora/$releasever/$basearch/test
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-test-debuginfo]
+      name=Docker CE Test - Debuginfo $basearch
+      baseurl=https://download.docker.com/linux/fedora/$releasever/debug-$basearch/test
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-test-source]
+      name=Docker CE Test - Sources
+      baseurl=https://download.docker.com/linux/fedora/$releasever/source/test
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-nightly]
+      name=Docker CE Nightly - $basearch
+      baseurl=https://download.docker.com/linux/fedora/$releasever/$basearch/nightly
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-nightly-debuginfo]
+      name=Docker CE Nightly - Debuginfo $basearch
+      baseurl=https://download.docker.com/linux/fedora/$releasever/debug-$basearch/nightly
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+
+      [docker-ce-nightly-source]
+      name=Docker CE Nightly - Sources
+      baseurl=https://download.docker.com/linux/fedora/$releasever/source/nightly
+      enabled=0
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/fedora/gpg
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Mullvad VPN repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/mullvad.repo
+    content: |
+      [mullvad-stable]
+      name=Mullvad VPN
+      baseurl=https://repository.mullvad.net/rpm/stable/$basearch
+      type=rpm
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://repository.mullvad.net/rpm/mullvad-keyring.asc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure Visual Studio Code repository is present
+  become: true  
+  copy:
+    dest: /etc/yum.repos.d/vscode.repo
+    content: |
+      [VScode]
+      name=VScode repo from microsoft
+      baseurl=https://packages.microsoft.com/yumrepos/vscode
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+      async=1
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add Terra repository
+  become: true
+  copy:
+    dest: "/etc/yum.repos.d/terra.repo"
+    content: |
+      [terra]
+      name=Terra $releasever
+      baseurl=https://repos.fyralabs.com/terra$releasever
+      type=rpm
+      skip_if_unavailable=True
+      gpgcheck=1
+      repo_gpgcheck=1
+      gpgkey=https://repos.fyralabs.com/terra$releasever/key.asc
+      enabled=1
+      enabled_metadata=1
+      metadata_expire=4h
+    owner: root
+    group: root
+    mode: '0644'
+
+
+# - name: Add Ghostty COPR repo
+#   become: true
+#   copy:
+#     dest: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:pgdev:ghostty.repo
+#     content: |
+#       [copr:copr.fedorainfracloud.org:pgdev:ghostty]
+#       name=Copr repo for ghostty owned by pgdev
+#       baseurl=https://download.copr.fedorainfracloud.org/results/pgdev/ghostty/fedora-$releasever-$basearch/
+#       type=rpm-md
+#       skip_if_unavailable=True
+#       gpgcheck=1
+#       gpgkey=https://download.copr.fedorainfracloud.org/results/pgdev/ghostty/pubkey.gpg
+#       repo_gpgcheck=0
+#       enabled=0
+#       enabled_metadata=1
+#     mode: '0644'
+
+# - name: Add Keyd COPR repo
+#   become: true
+#   copy:
+#     dest: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:alternateved:keyd.repo
+#     content: |
+#       [copr:copr.fedorainfracloud.org:alternateved:keyd]
+#       name=Copr repo for keyd owned by alternateved
+#       baseurl=https://download.copr.fedorainfracloud.org/results/alternateved/keyd/fedora-$releasever-$basearch/
+#       type=rpm-md
+#       skip_if_unavailable=True
+#       gpgcheck=1
+#       gpgkey=https://download.copr.fedorainfracloud.org/results/alternateved/keyd/pubkey.gpg
+#       repo_gpgcheck=0
+#       enabled=1
+#       enabled_metadata=1
+#     mode: '0644'
+
+# - name: Add Lazygit COPR repo
+#   become: true
+#   copy:
+#     dest: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:atim:lazygit.repo
+#     content: |
+#       [copr:copr.fedorainfracloud.org:atim:lazygit]
+#       name=Copr repo for lazygit owned by atim
+#       baseurl=https://download.copr.fedorainfracloud.org/results/atim/lazygit/fedora-$releasever-$basearch/
+#       type=rpm-md
+#       skip_if_unavailable=True
+#       gpgcheck=1
+#       gpgkey=https://download.copr.fedorainfracloud.org/results/atim/lazygit/pubkey.gpg
+#       repo_gpgcheck=0
+#       enabled=0
+#       enabled_metadata=1
+#     mode: '0644'
+
+
+
+

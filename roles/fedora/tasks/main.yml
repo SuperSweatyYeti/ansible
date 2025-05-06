@@ -1,0 +1,80 @@
+---
+
+- name: Include Fedora repo tasks
+  include_tasks: repos.yml
+
+- name: Include Fedora DNF tasks
+  include_tasks: dnf.yml
+
+- name: Include Fedora keyd tasks
+  include_tasks: keyd.yml
+
+- name: Include Fedora fonts tasks
+  include_tasks: fonts.yml
+
+- name: Include Fedora packages tasks
+  include_tasks: packages.yml
+
+- name: Include Fedora appimages tasks
+  include_tasks: appimages.yml
+
+- name: Include Fedora user-groups tasks
+  include_tasks: user-groups.yml
+
+- name: Include Fedora window-manager tasks
+  include_tasks: window-manager.yml
+
+- name: Ensure sshd service is enabled and started
+  become: true
+  ansible.builtin.systemd:
+    name: sshd
+    state: started
+    enabled: true
+
+- name: Check if brew is installed
+  stat:
+    path: "/home/linuxbrew/.linuxbrew/bin/brew"
+  register: homebrew_check
+
+- name: Install hombrew
+  block:
+    - name: Allow passwordless sudo for ansible_user temporarily for brew install
+      become: true
+      copy:
+        dest: "/etc/sudoers.d/{{ ansible_user }}"
+        content: "{{ ansible_user }} ALL=(ALL) NOPASSWD:ALL"
+        owner: root
+        group: root
+        mode: '0440'
+    
+    - name: Install Homebrew for non-root user
+      ansible.builtin.shell: |
+        if ! command -v brew &> /dev/null; then
+          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        else
+          echo "Homebrew is already installed"
+        fi
+      args:
+        executable: /bin/bash
+        creates: "/home/linuxbrew/.linuxbrew/bin/brew"
+      become: false  # VERY IMPORTANT: don't run as root
+      environment:
+        CI: "true"
+      register: brew_install_result
+      ignore_errors: true
+    
+    - name: Remove temporary passwordless sudo access
+      become: true
+      file:
+        path: "/etc/sudoers.d/{{ ansible_user }}"
+        state: absent
+  when: not homebrew_check.stat.exists
+
+- name: Install Homebrew Packages
+  become: false 
+  community.general.homebrew:
+    name: 
+    - lazygit
+    - lazydocker
+    - yazi
+    state: present

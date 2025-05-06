@@ -1,0 +1,27 @@
+---
+- name: Install Fedora packages 
+  become: true
+  package:
+    name:
+      - neovim
+      - git
+      - curl
+      - zsh
+      - btop
+      - zip
+      - unzip
+      - flatpak
+      - git
+      - stow
+      - zip
+      - unzip
+      - fzf
+      - fd-find
+      - ripgrep
+      - make
+      - automake
+      - gcc
+      - docker-ce
+      - docker-compose-plugin
+      - ghostty
+    state: present
