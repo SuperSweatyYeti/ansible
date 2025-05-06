@@ -108,3 +108,7 @@
     track_submodules: true   # Enables --remote-submodules behavior
     force: true
 
+- name: Execute tmux plugin init script
+  become: false  # no sudo
+  script: "/home/{{ ansible_user }}/.config/tmux/plugins/tpm/scripts/install_plugins.sh"
+
