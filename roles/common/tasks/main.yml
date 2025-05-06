@@ -112,8 +112,8 @@
   become: false 
   shell: |
     #!/bin/bash
-    cd $HOME/dotfiles
-    ls -al > $HOME/test.txt
+    cd /home/{{ ansible_user }}/dotfiles
+    ls -al > /home/{{ ansible_user }}/test.txt
 
 - name: Execute tmux plugin init script
   become: false  # no sudo
