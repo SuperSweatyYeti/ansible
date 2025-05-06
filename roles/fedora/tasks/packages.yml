@@ -3,25 +3,41 @@
   become: true
   package:
     name:
-      - neovim
-      - git
-      - curl
-      - zsh
-      - btop
-      - zip
-      - unzip
+      - jq # Parse json files
+      - stow
       - flatpak
       - git
-      - stow
+      - gh
+      - curl
+      - neovim
+      # Neovim plugin dependencies
       - zip
       - unzip
-      - fzf
       - fd-find
       - ripgrep
       - make
       - automake
       - gcc
+      - gcc-c++
+      - nodejs # For copilot neovim plugin
+      - wl-clipboard # clipboard support wayland
+      - xclip # clipboard support Xorg X11
+      # Others
+      - zsh
+      - zsh-autosuggestions
+      - btop
+      - fzf
       - docker-ce
       - docker-compose-plugin
-      - ghostty
+      - ghostty # Terminal emulator
+      - yt-dlp
+      - btrfs-assistant
+      - cargo
+      - code # VScode
+      - fastfetch
+      - steam
+      - vlc
+      - mpv
+      - brave-browser
+      - mullvad-vpn
     state: present
