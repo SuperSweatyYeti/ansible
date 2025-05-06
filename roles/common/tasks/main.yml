@@ -6,7 +6,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 - name: Update dnf cache
-  ansible.builtin.dnf:
+  dnf:
     update_cache: true
   when: ansible_facts['distribution'] == "Fedora"
 
@@ -107,6 +107,13 @@
     recursive: true
     track_submodules: true   # Enables --remote-submodules behavior
     force: true
+
+- name: Run inline Bash script to stow --adopt cloned dotfiles ( TESTING )
+  become: false 
+  shell: |
+    #!/bin/bash
+    cd $HOME/dotfiles
+    ls -al > $HOME/test.txt
 
 - name: Execute tmux plugin init script
   become: false  # no sudo
