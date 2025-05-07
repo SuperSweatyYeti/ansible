@@ -36,8 +36,6 @@
     name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
 
-
-
 - name: Ensure Brave Browser repository is present
   become: true  
   copy:
