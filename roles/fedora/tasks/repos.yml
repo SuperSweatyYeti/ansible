@@ -10,6 +10,11 @@
     name: dnf-plugins-core
     state: present
 
+- name: Import RPM Fusion nonfree GPG key
+  become: true
+  rpm_key:
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    state: present
 
 - name: Enable the RPM Fusion nonfree repository (includes nonfree-nvidia)
   become: true
@@ -17,17 +22,11 @@
     name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
 
-- name: Enable rpmfusion-nonfree-nvidia repo
+- name: Import RPM Fusion free GPG key
   become: true
-  command: dnf config-manager --set-enabled rpmfusion-nonfree-nvidia
-  args:
-    warn: false
-
-- name: Ensure RPM Fusion non-free updates repository is present
-  become: true
-  command: dnf config-manager --set-enabled rpmfusion-nonfree-updates
-  args:
-    warn: false
+  rpm_key:
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    state: present
 
 - name: Ensure RPM Fusion free repository is present
   become: true
@@ -35,11 +34,7 @@
     name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
 
-- name: Ensure RPM Fusion free updates repository is present
-  become: true
-  command: dnf config-manager --set-enabled rpmfusion-free-updates
-  args:
-    warn: false
+
 
 - name: Ensure Brave Browser repository is present
   become: true  
