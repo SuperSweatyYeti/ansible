@@ -4,10 +4,10 @@
   package:
     name:
       - jq # Parse json files
-      - stow
+      - stow # create symlinks for dotfiles
       - flatpak
       - git
-      - gh
+      - gh # github cli
       - curl
       - neovim
       # Neovim plugin dependencies
@@ -27,12 +27,12 @@
       - zsh-autosuggestions
       - btop
       - fzf
-      - docker-ce
+      - docker-ce # docker community edition
       - docker-compose-plugin
       - ghostty # Terminal emulator
-      - yt-dlp
+      - yt-dlp # youtube video downloader
       - btrfs-assistant
-      - cargo
+      - cargo # Rust programming language package manager
       - code # VScode
       - fastfetch
       - steam
@@ -41,3 +41,8 @@
       - brave-browser
       - mullvad-vpn
     state: present
+
+- name: Upgrade all packages to the latest version
+  dnf:
+    name: '*'
+    state: latest

@@ -16,18 +16,18 @@
           - GIT_USER_EMAIL 
           Playbook will stop now.
 
-- name: Example playbook with debugging stop
-  hosts: localhost
-  vars_files:
-    - .env.yml
-  tasks:
-    - name: Show a debug message for inspection
-      debug:
-        msg: "This is for debugging purposes var: {{ GIT_USER_NAME }}"
-
-    - name: Pause for manual inspection
-      pause:
-        prompt: "Press Enter to continue with the next task"
+# - name: Example playbook with debugging stop
+#   hosts: localhost
+#   vars_files:
+#     - .env.yml
+#   tasks:
+#     - name: Show a debug message for inspection
+#       debug:
+#         msg: "This is for debugging purposes var: {{ GIT_USER_NAME }}"
+#
+#     - name: Pause for manual inspection
+#       pause:
+#         prompt: "Press Enter to continue with the next task"
 
 
 - name: Setup Linux Configurations

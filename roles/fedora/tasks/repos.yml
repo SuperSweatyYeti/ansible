@@ -3,192 +3,43 @@
 # - name: Configure Fedora repos
 #   become: true
 #   tasks:
-- name: Ensure RPM Fusion non-free repository is present
+
+- name: Ensure dnf-plugins-core is installed
   become: true
-  copy:
-    dest: /etc/yum.repos.d/rpmfusion-nonfree.repo
-    content: |
-      [rpmfusion-nonfree]
-      name=RPM Fusion for Fedora $releasever - Nonfree
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
-      enabled=1
-      enabled_metadata=1
-      metadata_expire=14d
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
+  dnf:
+    name: dnf-plugins-core
+    state: present
 
-      [rpmfusion-nonfree-debuginfo]
-      name=RPM Fusion for Fedora $releasever - Nonfree - Debug
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-debug-$releasever&arch=$basearch
-      enabled=0
-      metadata_expire=7d
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
 
-      [rpmfusion-nonfree-source]
-      name=RPM Fusion for Fedora $releasever - Nonfree - Source
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-source-$releasever&arch=$basearch
-      enabled=0
-      metadata_expire=7d
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: Ensure RPM Fusion non-free NVIDIA driver repository is present
+- name: Enable the RPM Fusion nonfree repository (includes nonfree-nvidia)
   become: true
-  copy:
-    dest: /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
-    content: |
-      [rpmfusion-nonfree-nvidia-driver]
-      name=RPM Fusion for Fedora $releasever - Nonfree - NVIDIA Driver
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-nvidia-driver-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-      skip_if_unavailable=True
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
 
-      [rpmfusion-nonfree-nvidia-driver-debuginfo]
-      name=RPM Fusion for Fedora $releasever - Nonfree - NVIDIA Driver Debug
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-nvidia-driver-debug-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-      skip_if_unavailable=True
-
-      [rpmfusion-nonfree-nvidia-driver-source]
-      name=RPM Fusion for Fedora $releasever - Nonfree - NVIDIA Driver Source
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-nvidia-driver-source-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-      skip_if_unavailable=True
-    owner: root
-    group: root
-    mode: '0644'
+- name: Enable rpmfusion-nonfree-nvidia repo
+  become: true
+  command: dnf config-manager --set-enabled rpmfusion-nonfree-nvidia
+  args:
+    warn: false
 
 - name: Ensure RPM Fusion non-free updates repository is present
   become: true
-  copy:
-    dest: /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
-    content: |
-      [rpmfusion-nonfree-updates]
-      name=RPM Fusion for Fedora $releasever - Nonfree - Updates
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
-      enabled=1
-      enabled_metadata=1
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-
-      [rpmfusion-nonfree-updates-debuginfo]
-      name=RPM Fusion for Fedora $releasever - Nonfree - Updates Debug
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-debug-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-
-      [rpmfusion-nonfree-updates-source]
-      name=RPM Fusion for Fedora $releasever - Nonfree - Updates Source
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-source-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-$releasever
-    owner: root
-    group: root
-    mode: '0644'
+  command: dnf config-manager --set-enabled rpmfusion-nonfree-updates
+  args:
+    warn: false
 
 - name: Ensure RPM Fusion free repository is present
   become: true
-  copy:
-    dest: /etc/yum.repos.d/rpmfusion-free.repo
-    content: |
-      [rpmfusion-free]
-      name=RPM Fusion for Fedora $releasever - Free
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
-      enabled=1
-      metadata_expire=14d
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
-
-      [rpmfusion-free-debuginfo]
-      name=RPM Fusion for Fedora $releasever - Free - Debug
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-debug-$releasever&arch=$basearch
-      enabled=0
-      metadata_expire=7d
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
-
-      [rpmfusion-free-source]
-      name=RPM Fusion for Fedora $releasever - Free - Source
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-source-$releasever&arch=$basearch
-      enabled=0
-      metadata_expire=7d
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
-    owner: root
-    group: root
-    mode: '0644'
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
 
 - name: Ensure RPM Fusion free updates repository is present
-  become: true  
-  copy:
-    dest: /etc/yum.repos.d/rpmfusion-free-updates.repo
-    content: |
-      [rpmfusion-free-updates]
-      name=RPM Fusion for Fedora $releasever - Free - Updates
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
-      enabled=1
-      enabled_metadata=1
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
-
-      [rpmfusion-free-updates-debuginfo]
-      name=RPM Fusion for Fedora $releasever - Free - Updates Debug
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-debug-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
-
-      [rpmfusion-free-updates-source]
-      name=RPM Fusion for Fedora $releasever - Free - Updates Source
-      metalink=https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-source-$releasever&arch=$basearch
-      enabled=0
-      type=rpm-md
-      gpgcheck=1
-      repo_gpgcheck=0
-      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-$releasever
-    owner: root
-    group: root
-    mode: '0644'
+  become: true
+  command: dnf config-manager --set-enabled rpmfusion-free-updates
+  args:
+    warn: false
 
 - name: Ensure Brave Browser repository is present
   become: true  
@@ -199,6 +50,8 @@
       name=Brave Browser
       enabled=1
       autorefresh=1
+      gpgcheck=1
+      gpgkey=https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
       baseurl=https://brave-browser-rpm-release.s3.brave.com/$basearch
     owner: root
     group: root
