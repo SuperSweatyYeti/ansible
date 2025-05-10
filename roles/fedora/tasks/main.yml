@@ -79,9 +79,9 @@
     - yazi
     state: present
 
-- name: Reboot the remote host
-  become: true
-  ansible.builtin.reboot:
-    reboot_timeout: 500
-    test_command: whoami
-
+# - name: Reboot the remote host
+#   become: true
+#   ansible.builtin.reboot:
+#     reboot_timeout: 500
+#     test_command: whoami
+#
