@@ -5,10 +5,10 @@ echo "[*] Detecting package manager..."
 if command -v apt &> /dev/null; then
     PM="apt"
     sudo apt update
-    sudo apt install -y python python-pip
+    sudo apt install -y python python-pip sshpass
 elif command -v dnf &> /dev/null; then
     PM="dnf"
-    sudo dnf install -y python python-pip
+    sudo dnf install -y python python-pip sshpass
 else
     echo "[!] Unsupported package manager. Please install Python and pip manually."
     exit 1
