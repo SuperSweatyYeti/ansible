@@ -42,6 +42,7 @@
       - mullvad-vpn
       - tailscale
       - timeshift
+      - sshpass
     state: present
 
 - name: Upgrade all packages to the latest version
