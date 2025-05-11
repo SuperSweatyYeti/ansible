@@ -31,6 +31,13 @@
     state: started
     enabled: true
 
+- name: Ensure tailscale service is enabled and started
+  become: true
+  ansible.builtin.systemd:
+    name: tailscaled
+    state: started
+    enabled: true
+
 - name: Check if brew is installed
   stat:
     path: "/home/linuxbrew/.linuxbrew/bin/brew"

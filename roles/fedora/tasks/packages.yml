@@ -42,7 +42,7 @@
       - mullvad-vpn
       - tailscale
       - timeshift
-      - sshpass
+      - sshpass # required for ansible 
     state: present
 
 - name: Upgrade all packages to the latest version
