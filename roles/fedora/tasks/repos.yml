@@ -10,19 +10,29 @@
     name: dnf-plugins-core
     state: present
 
- # RPM fusion keys as of May 2025
+
+ # RPM fusion non-free keys as of May 2025
 - name: Import RPM Fusion nonfree GPG key
   become: true
-  rpm_key: 
+  rpm_key:
     key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
     state: present
+  register: result
+  retries: 3
+  delay: 5
+  until: result is succeeded
 
- # RPM fusion keys as of May 2025
+
+ # RPM fusion free keys as of May 2025
 - name: Import RPM Fusion free GPG key
   become: true
   rpm_key:
     key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
     state: present
+  register: result
+  retries: 3
+  delay: 5
+  until: result is succeeded
 
 - name: Enable the RPM Fusion nonfree repository (includes nonfree-nvidia)
   become: true
