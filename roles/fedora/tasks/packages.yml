@@ -27,6 +27,7 @@
       - zsh-autosuggestions
       - btop
       - fzf
+      - lsd # prettier 'ls' output with icons and colors
       - docker-ce # docker community edition
       - docker-compose-plugin
       - ghostty # Terminal emulator
