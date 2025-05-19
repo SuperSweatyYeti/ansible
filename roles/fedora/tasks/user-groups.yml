@@ -20,19 +20,19 @@
 
 - name: Add ansible_user to groups
   block:
-    - name: Add ansible_user to docker group
+    - name: Add ansible_user to 'docker' group
       when: group_check_docker.rc == 0 
       ansible.builtin.user:
         name: "{{ ansible_user }}"  # or any specific username
         groups: docker              # group name
         append: true                 # avoid removing the user from other groups
-    - name: Add ansible_user to docker group
+    - name: Add ansible_user to 'dialout' group
       when: group_check_dialout.rc == 0
       ansible.builtin.user:
         name: "{{ ansible_user }}"  # or any specific username
         groups: dialout              # group name
         append: true                 # avoid removing the user from other groups
-    - name: Add ansible_user to docker group
+    - name: Add ansible_user to 'libvirt' group
       when: group_check_libvirt.rc == 0
       ansible.builtin.user:
         name: "{{ ansible_user }}"  # or any specific username
