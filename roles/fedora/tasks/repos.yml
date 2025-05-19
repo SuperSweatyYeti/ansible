@@ -232,6 +232,20 @@
     group: root
     mode: '0644'
 
+- name: Add Repo for 'nushell' package
+  become: true
+  copy:
+    dest: "/etc/yum.repos.d/gemfury-nushell.repo"
+    content: |
+      [gemfury-nushell]
+      name=Gemfury Nushell Repo
+      baseurl=https://yum.fury.io/nushell/
+      enabled=1
+      gpgcheck=0
+      gpgkey=https://yum.fury.io/nushell/gpg.key"
+    owner: root
+    group: root
+    mode: '0644'
 
 # - name: Add Ghostty COPR repo
 #   become: true
