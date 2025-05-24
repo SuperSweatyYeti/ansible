@@ -5,6 +5,7 @@
     name:
       - jq # Parse json files
       - stow # create symlinks for dotfiles
+      - bat # nicer cat utility
       - flatpak
       - git
       - gh # github cli
