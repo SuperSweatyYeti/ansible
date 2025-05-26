@@ -1,0 +1,55 @@
+---
+
+- name: Ensure MPD-related files and directories exist
+  become: false
+
+  tasks:
+    - name: Ensure base directory exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd
+        state: directory
+        mode: '0755'
+
+    - name: Ensure database file exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd/database
+        state: touch
+        mode: '0644'
+
+    - name: Ensure log file exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd/log
+        state: touch
+        mode: '0644'
+
+    - name: Ensure mpd_socket (Unix socket) exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd/mpd_socket
+        state: touch
+        mode: '0666'
+
+    - name: Ensure playlists directory exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd/playlists
+        state: directory
+        mode: '0755'
+
+    - name: Ensure state file exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd/state
+        state: touch
+        mode: '0644'
+
+    - name: Ensure sticker.sql file exists
+      file:
+        path: /home/{{ ansible_user }}/.config/mpd/sticker.sql
+        state: touch
+        mode: '0644'
+
+- name: Enable mpd.service at user level
+  become: false
+
+  tasks:
+    - name: Enable mpd.service for current user - {{ ansible_user }}
+      shell: systemctl --user enable mpd.service
+

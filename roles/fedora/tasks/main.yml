@@ -15,6 +15,9 @@
 - name: Include Fedora packages tasks
   include_tasks: packages.yml
 
+- name: Include Fedora mpd setup (Music in Terminal) tasks 
+  include_tasks: packages.yml
+
 - name: Include Fedora appimages tasks
   include_tasks: appimages.yml
 
