@@ -35,6 +35,7 @@
       - yt-dlp # youtube video downloader
       - btrfs-assistant
       - cargo # Rust programming language package manager
+      - golang # golang programming language and package manager
       - code # VScode
       - fastfetch
       - steam

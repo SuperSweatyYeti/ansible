@@ -1,5 +1,5 @@
 ---
-
+# Setup mpd (Music Player Daemon) and Mpris integration for it
 - name: Ensure MPD-related files and directories exist
   become: false
 
@@ -53,3 +53,27 @@
     - name: Enable mpd.service for current user - {{ ansible_user }}
       shell: systemctl --user enable mpd.service
 
+- name: Ensure GOPATH bin directory exists
+  become: false
+  file:
+    path: "/home/{{ ansible_user }}/go/bin"
+    state: directory
+    mode: '0755'
+
+- name: Install mpd-mpris using go install
+  become: false
+  shell: |
+    export PATH="$PATH:/usr/bin"
+    export GOPATH="$HOME/go"
+    go install github.com/natsukagami/mpd-mpris/cmd/mpd-mpris@latest
+  args:
+    executable: /bin/bash
+  environment:
+    GOPATH: "/home/{{ ansible_user }}/go"
+  creates: "/home/{{ ansible_user }}/go/bin/mpd-mpris"
+
+- name: Enable mpd-mpris.service at user level
+  become: false
+  tasks:
+    - name: Enable mpd-mpris.service for current user - {{ ansible_user }}
+      shell: systemctl --user enable mpd-mpris.service
