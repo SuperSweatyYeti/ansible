@@ -47,7 +47,7 @@
       - timeshift
       - sshpass # required for ansible 
       - mpd # Music player daemon for music playing in terminal
-      - mpc # Music player daemon controller for quick control "mpc pause" "mpc play" "mpc stop"
+      # - mpc # Music player daemon controller for quick control "mpc pause" "mpc play" "mpc stop"
     state: present
 
 - name: Upgrade all packages to the latest version
