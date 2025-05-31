@@ -51,6 +51,7 @@
     state: present
 
 - name: Upgrade all packages to the latest version
+  become: true
   dnf:
     name: '*'
     state: latest

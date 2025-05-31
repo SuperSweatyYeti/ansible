@@ -77,3 +77,12 @@
   tasks:
     - name: Enable mpd-mpris.service for current user - {{ ansible_user }}
       shell: systemctl --user enable mpd-mpris.service
+
+
+- name: Install Cargo/Rust package "rmpc" terminal music player ( mpd client )
+  become: false
+  ansible.builtin.shell: |
+    cargo install --git https://github.com/mierak/rmpc --locked
+  args:
+    creates: "/home/{{ ansible_user }}/.cargo/bin/rmpc"
+
