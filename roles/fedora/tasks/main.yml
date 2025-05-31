@@ -89,12 +89,10 @@
     - yazi
     state: present
 
-- name: Rename Fedora host
+- name: Rename Fedora Host Set the hostname using hostnamectl
   become: true
-  tasks:
-    - name: Set the hostname using hostnamectl
-      ansible.builtin.hostname:
-        name: "{{ FEDORA_HOSTNAME }}" # Use hostname from .env.yml file
+  ansible.builtin.hostname:
+    name: "{{ FEDORA_HOSTNAME }}" # Use hostname from .env.yml file
 
 
 # - name: Reboot the remote host
