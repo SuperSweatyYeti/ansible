@@ -42,6 +42,7 @@
       - vlc
       - mpv
       - brave-browser
+      - tftp-server # We are network engineers
       - mullvad-vpn
       - tailscale
       - timeshift

@@ -94,6 +94,45 @@
   ansible.builtin.hostname:
     name: "{{ FEDORA_HOSTNAME }}" # Use hostname from .env.yml file
 
+- name: Set Selinux to permissive # I know what I am doing
+  become: true
+  ansible.builtin.selinux:
+    policy: targeted
+    state: permissive
+
+- name: Ensure TFTP root directory exists
+  ansible.builtin.file:
+    path: /home/duster/tftp
+    state: directory
+    owner: nobody
+    group: nobody
+    mode: '0777'
+
+- name: Create systemd override for TFTP service # set my custom tftp folder
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/tftp.service.d/override.conf
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=/usr/sbin/in.tftpd -s /home/duster/tftp --create
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Re-exec and reload systemd
+    - Restart tftp service
+
+# Handlers
+- name: Re-exec and reload systemd
+  ansible.builtin.command: >
+    systemctl daemon-reexec && systemctl daemon-reload
+
+- name: Restart tftp service
+  ansible.builtin.systemd:
+    name: tftp.service
+    state: restarted
+
+
 
 # - name: Reboot the remote host
 #   become: true
