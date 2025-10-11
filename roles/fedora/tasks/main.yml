@@ -116,6 +116,7 @@
       ExecStart=
       ExecStart=/usr/sbin/in.tftpd -s /home/duster/tftp --create
       # Stop automatically after 15 seconds
+      # 60 min = 3600 sec
       RuntimeMaxSec=3600
       # Make sure the service is killed if it exceeds this
       KillMode=control-group
