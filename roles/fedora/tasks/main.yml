@@ -101,6 +101,7 @@
     state: permissive
 
 - name: Ensure TFTP root directory exists
+  become: false
   ansible.builtin.file:
     path: /home/duster/tftp
     state: directory
@@ -109,6 +110,7 @@
     mode: '0777'
 
 - name: Create systemd override for TFTP service # set my custom tftp folder
+  become: true
   ansible.builtin.copy:
     dest: /etc/systemd/system/tftp.service.d/override.conf
     content: |
@@ -131,11 +133,13 @@
     - Restart tftp service
 
 # Handlers
-- name: Re-exec and reload systemd
+- name: Reload systemd config files
+  become: true
   ansible.builtin.command: >
-    systemctl daemon-reexec && systemctl daemon-reload
+    systemctl daemon-reload
 
 - name: Restart tftp service
+  become: true
   ansible.builtin.systemd:
     name: tftp.service
     state: restarted
